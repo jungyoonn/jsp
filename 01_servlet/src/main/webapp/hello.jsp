@@ -19,5 +19,10 @@
 				}
 			}
 		%>
+		<script>
+			const num = '<%=num%>';
+			alert(num);
+			// javascript보다 java가 더 빨리 로드되기 때문에 num 값을 불러올 수 있다 (java 코드 안의 num을 호출한 것이다)
+		</script>
 	</body>
 </html>
