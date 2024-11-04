@@ -43,13 +43,13 @@
                         data,
                         dataType : 'jsonp',
                         crossDomain : true,
-                        success : function(data) {ㅅ
+                        success : function(data) {
                             console.log(data);
                             console.log("결과는");
-                            console.log(data.results.juso[0].roadAddr);
+                            console.log(data.results.juso.length);
 
                             str = '';
-                            for(let i = 0; i < 100; i++) {
+                            for(let i = 0; i < data.results.juso.length; i++) {
                                 str += `<li class="list-group-item"><a href="#" class="small">\${data.results.juso[i].roadAddr}</a></li>`;
                             }
                             $(".search-result-wrap").html(str);
@@ -98,14 +98,14 @@
             </nav>
 
             <main class="container">
-                <form name="form" class="mx-auto col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4 col xxl-3 card p-3 mt-5">
+                <form name="form" method="post" class="mx-auto col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4 col xxl-3 card p-3 mt-5">
                     <h4 class="text-center mt-2">회원가입</h4>
                     <input type="text" class="form-control my-2" id="id" placeholder="아이디" name="id">
                     <input type="password" class="form-control my-2" id="pwd" placeholder="비밀번호" name="pwd">
                     <input type="text" class="form-control my-2" id="name" placeholder="이름" name="name">
                     <input type="email" class="form-control my-2" id="email" placeholder="이메일" name="email">
                     <input type="text" class="form-control my-2" id="roadAddr" placeholder="주소" name="roadAddr" readonly>
-                    <input type="text" class="form-control my-2" id="email" placeholder="상세 주소" name="email">
+                    <input type="text" class="form-control my-2" id="detailAddr" placeholder="상세 주소" name="email">
                     <div class="input-group mb-3 my-2">
                         <input type="text" class="form-control " placeholder="도로명검색">
                         <button class="btn btn-outline-dark" type="button" id="search">검색</button>
