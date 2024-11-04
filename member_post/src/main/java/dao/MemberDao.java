@@ -9,7 +9,9 @@ public class MemberDao {
 	public int insert(Member member) {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
+
 		try {
+			Class.forName("org.mariadb.jdbc.Driver");
 //			String sql = "INSERT INTO tbl_member(id, pw, name) VALUES ('" + member.getId() + "', '" + member.getPw() + "', '" + member.getName() + "')";
 			
 			// 위에처럼 뉘역뉘역 쓰지 않고 전처리를 한다
@@ -34,7 +36,7 @@ public class MemberDao {
 //			return stmt.executeUpdate(sql);
 			return pstmt.executeUpdate();
 			
-		} catch (SQLException e) {
+		} catch (SQLException | ClassNotFoundException e) {
 			e.printStackTrace();
 		} finally {
 			try {
