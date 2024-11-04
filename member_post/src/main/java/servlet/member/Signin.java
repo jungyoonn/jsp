@@ -8,6 +8,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import service.MemberService;
 import service.MemberServiceImpl;
@@ -31,11 +32,13 @@ public class Signin extends HttpServlet{
 		System.out.println(id + " :::: " + pwd);
 		
 		if(service.login(id, pwd)) {
-			// 로그인 성공
-			resp.sendRedirect("signin");
+			// 로그인 성공 (세션 생성)
+			HttpSession session = req.getSession();
+			session.setAttribute("member", service.findBy(id)); 
+			resp.sendRedirect(req.getContextPath() + "/");		
 		} else {
 			// 로그인 실패
-			resp.sendRedirect("signup");
+			resp.sendRedirect("login?msg=fail");
 		}
 		
 	}
