@@ -20,6 +20,7 @@ public class Member {
 		this.id = id;
 		this.pw = pw;
 		this.name = name;
+		this.email = email;
 		this.roadAddr = roadAddr;
 		this.detailAddr = detailAddr;
 		this.regdate = regdate;
