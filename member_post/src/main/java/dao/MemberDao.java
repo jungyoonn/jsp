@@ -59,4 +59,11 @@ public class MemberDao {
 				.detailAddr("4층").build());
 		System.out.println(result);
 	}
+
+	// 싱글톤 객체 생성
+	private static final MemberDao dao = new MemberDao();
+	public static MemberDao getInstance() {
+		return dao;
+	}
+	private MemberDao() {}
 }
