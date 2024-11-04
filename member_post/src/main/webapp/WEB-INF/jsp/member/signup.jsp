@@ -105,7 +105,7 @@
                     <input type="text" class="form-control my-2" id="name" placeholder="이름" name="name">
                     <input type="email" class="form-control my-2" id="email" placeholder="이메일" name="email">
                     <input type="text" class="form-control my-2" id="roadAddr" placeholder="주소" name="roadAddr" readonly>
-                    <input type="text" class="form-control my-2" id="detailAddr" placeholder="상세 주소" name="email">
+                    <input type="text" class="form-control my-2" id="detailAddr" placeholder="상세 주소" name="detailAddr">
                     <div class="input-group mb-3 my-2">
                         <input type="text" class="form-control " placeholder="도로명검색">
                         <button class="btn btn-outline-dark" type="button" id="search">검색</button>
