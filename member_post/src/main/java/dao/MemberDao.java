@@ -2,6 +2,7 @@ package dao;
 
 import java.sql.*;
 
+import utils.DBConn;
 import vo.Member;
 
 public class MemberDao {
@@ -48,16 +49,43 @@ public class MemberDao {
 		return 0;
 	}
 	
+	public Member selectOne(String id) {
+		Member member = null;
+		String sql = "select * from tbl_member where id = ?";
+		try (Connection conn = DBConn.getConnection(); PreparedStatement pstmt =conn.prepareStatement(sql)){
+			pstmt.setString(1, id);
+			ResultSet rs = pstmt.executeQuery();
+			if(rs.next()) {
+				member = Member.builder()
+						.id(rs.getString("id"))
+						.pw(rs.getString("pw"))
+						.name(rs.getString("name"))
+						.email(rs.getString("email"))
+						.roadAddr(rs.getString("road_addr"))
+						.detailAddr(rs.getString("detail_addr"))
+						.regdate(rs.getDate("regdate"))
+						.build();
+			}
+			rs.close();
+		} catch(SQLException | ClassNotFoundException e) {
+			e.printStackTrace();
+		} 
+		return member;
+	}
+	
 	public static void main(String[] args) {
 		MemberDao dao = new MemberDao();
-		int result = dao.insert(Member.builder()
-				.id("ffff")
-				.pw("1234567")
-				.name("이름")
-				.email("abc@naver.com")
-				.roadAddr("대륭")
-				.detailAddr("4층").build());
-		System.out.println(result);
+//		int result = dao.insert(Member.builder()
+//				.id("ffff")
+//				.pw("1234567")
+//				.name("이름")
+//				.email("abc@naver.com")
+//				.roadAddr("대륭")
+//				.detailAddr("4층").build());
+//		System.out.println(result);
+		
+		dao.selectOne("sophia");
+		System.out.println(dao.selectOne("sophia"));
 	}
 
 	// 싱글톤 객체 생성
