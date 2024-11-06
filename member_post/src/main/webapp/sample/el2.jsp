@@ -22,5 +22,7 @@
 		 <h2>request : ${requestScope.number}</h2>
 		 <h2>session : ${sessionScope.number}</h2>
 		 <h2>application : ${applicationScope.number}</h2>
+		 <h2>cookie : ${cookie.layer.value}</h2>
+		 <h2>cookie : ${cookie['remember-id'].value}</h2>
 	</body>
 </html>
