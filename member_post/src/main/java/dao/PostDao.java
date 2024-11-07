@@ -71,7 +71,7 @@ public class PostDao {
 	
 	public List<Post> selectList() {
 		List<Post> posts = new ArrayList<>();
-		String sql = "select pno, title, writer, view_count, regdate from tbl_post";
+		String sql = "select pno, title, writer, view_count, regdate from tbl_post order by 1 desc";
 		
 		try (Connection conn = DBConn.getConnection(); PreparedStatement pstmt =conn.prepareStatement(sql)){
 			ResultSet rs = pstmt.executeQuery();
