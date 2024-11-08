@@ -1,6 +1,7 @@
 package servlet.member;
 
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.Date;
 
 import javax.servlet.ServletException;
@@ -26,7 +27,6 @@ public class Signin extends HttpServlet{
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		req.setCharacterEncoding("utf-8");
 		String id = req.getParameter("id");
 		String pwd = req.getParameter("pwd");
 		
@@ -58,7 +58,14 @@ public class Signin extends HttpServlet{
 				}
 			}
 			
-			resp.sendRedirect(req.getContextPath() + "/index");		
+			//url 파라미터 여부에 따른 리디렉션 페이지 지정
+			String redirectURL = req.getContextPath() + "/index";
+			String url = req.getParameter("url");
+			
+			if(url != null && !url.equals("")) {
+				redirectURL = URLDecoder.decode(url, "utf-8");
+			}
+			resp.sendRedirect(redirectURL);		
 		} else {
 			// 로그인 실패
 			resp.sendRedirect("login?msg=fail");
