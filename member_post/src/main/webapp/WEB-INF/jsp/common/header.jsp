@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <header class="container-fluid bg-light">
     <div class="container clearfix p-2">
-        <a href="index" class="float-start"><img src="imgs/logo.png" alt="로고" class="img-fluid" width="250"></a>
+        <a href="index" class="float-start"><img src="${pageContext.request.contextPath}/imgs/logo.png" alt="로고" class="img-fluid" width="250"></a>
         <h1 class="text-center fw-bold p-3">게시판 레이아웃</h1>
     </div>
 </header>
