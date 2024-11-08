@@ -10,7 +10,10 @@
         <div class="wrap">
             <jsp:include page="../common/header.jsp" />
             <main class="container">
-                <div class="my-3 col md-9 mx-auto">
+            <div class="clearfix py-4">
+            	<h2 class="float-start">Post View</h2>
+           	</div>
+                <div class="col md-9 mx-auto">
                     <label for="title" class="form-label mt-3"><i class="fa-solid fa-pen"></i> <b>제목:</b></label>
                     <input type="text" class="form-control" id="title" placeholder="글 제목을 입력해 주세요" name="title" value="${post.title}" disabled>
 
@@ -27,6 +30,10 @@
                     <input type="text" class="form-control float-end" id="updatedate" name="updatedate" value="${post.updatedate}" disabled>
 
                     <div class="text-center my-5">
+	                    <c:if test="${post.writer == member.id}">
+	                        <a href="modify?pno=${post.pno}" class="btn btn-outline-dark">수정</a>
+	                        <a href="remove?pno=${post.pno}" class="btn btn-secondary" onclick="return confirm('삭제하시겠습니까?')">삭제</a>
+	                    </c:if>
                         <a href="list" class="btn btn-dark">목록</a>
                     </div>
                 </div>
