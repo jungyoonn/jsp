@@ -151,29 +151,29 @@ public class PostDao {
 	public static void main(String[] args) {
 		PostDao dao = new PostDao();
 		
-//		for(int i = 0; i < 10; i ++) {
-//			dao.insert(Post.builder()
-//					.writer("sophia")
-//					.title("제목 " + (i + 1))
-//					.content("내용 " + (i + 1))
-//					.build());
-//		}
+		for(int i = 0; i < 10; i ++) {
+			dao.insert(Post.builder()
+					.writer("sophia")
+					.title("제목 " + (i + 1))
+					.content("내용 " + (i + 1))
+					.build());
+		}
 		
-		dao.selectList().forEach(System.out::println);
-		System.out.println();
-		System.out.println(dao.selectOne(12L));
-		System.out.println();
+//		dao.selectList().forEach(System.out::println);
+//		System.out.println();
+//		System.out.println(dao.selectOne(12L));
+//		System.out.println();
 //		System.out.println(dao.delete(15L));
-		
-		System.out.println("수정 후");
-		
-		Post post = dao.selectOne(12L);
-		post = Post.builder()
-				.pno(post.getPno())
-				.title("수정된 제목")
-				.content("수정된 내용")
-				.build();
-		dao.update(post);
+//		
+//		System.out.println("수정 후");
+//		
+//		Post post = dao.selectOne(12L);
+//		post = Post.builder()
+//				.pno(post.getPno())
+//				.title("수정된 제목")
+//				.content("수정된 내용")
+//				.build();
+//		dao.update(post);
 		
 		System.out.println(dao.selectOne(12L));
 	}
