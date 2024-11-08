@@ -14,7 +14,7 @@
         <li class="nav-item dropdown mx-4">
             <a class="text-white nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">게시판</a>
             <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="${cp}post?category=2">자유게시판</a></li>
+                <li><a class="dropdown-item" href="${cp}post/list">자유게시판</a></li>
                 <li><a class="dropdown-item" href="${cp}post?category=3">자료실</a></li>
                 <li><a class="dropdown-item" href="${cp}gallery">갤러리</a></li>
             </ul>
