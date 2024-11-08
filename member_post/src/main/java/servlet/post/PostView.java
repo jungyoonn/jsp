@@ -24,9 +24,9 @@ public class PostView extends HttpServlet {
 			return;
 		}
 		
-		Long bno = Long.valueOf(pnoString);
+		Long pno = Long.valueOf(pnoString);
 		
-		req.setAttribute("post", service.findBy(bno));
+		req.setAttribute("post", service.view(pno));
 		req.getRequestDispatcher("/WEB-INF/jsp/post/view.jsp").forward(req, resp);
 	}
 
