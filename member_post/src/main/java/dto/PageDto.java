@@ -9,6 +9,10 @@ public class PageDto {
 	private int startPage;
 	private int endPage;
 	private int pageCount;
+	private boolean prev;
+	private boolean next;
+	private boolean doublePrev;
+	private boolean doubleNext;
 	
 	public PageDto(int total) {
 		this(new Criteria(), total);
@@ -25,13 +29,17 @@ public class PageDto {
 
 		endPage = (cri.getPage() + pageCount - 1) / pageCount * pageCount;
 		startPage = endPage - pageCount + 1;
-		
+		System.out.println(cri);
 		int realEnd = (total + cri.getAmount() - 1) / cri.getAmount();
-		System.out.println("realEnd ::: " + realEnd);
 		
 		if(realEnd < endPage) {
 			endPage = realEnd;
 		}
+		
+		prev = cri.getPage() > 1;
+		next = cri.getPage() < realEnd;
+		doublePrev = startPage > 1;
+		doubleNext = endPage < realEnd;
 	}
 	
 	public static void main(String[] args) {
