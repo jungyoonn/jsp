@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import dto.Criteria;
 import service.PostService;
 import service.PostServiceImpl;
 import utils.Commons;
@@ -21,9 +22,11 @@ public class PostUpdate extends HttpServlet{
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String pnoStr = req.getParameter("pno");
 		Object memberObj = req.getSession().getAttribute("member");
+		Criteria cri = new Criteria(req);
+		String redirectUrl = "list?" + cri.getQs2();
 		
 		if(pnoStr == null || memberObj == null) {
-			Commons.printMsg("비정상적인 접근입니다", "list", resp);
+			Commons.printMsg("비정상적인 접근입니다", redirectUrl, resp);
 			return;
 		}
 		
@@ -31,10 +34,11 @@ public class PostUpdate extends HttpServlet{
 		Member m = (Member) memberObj;
 		
 		if(!m.getId().equals(service.findBy(pno).getWriter())) {
-			Commons.printMsg("본인이 작성한 글만 수정할 수 있습니다", "list" + pno, resp);
+			Commons.printMsg("본인이 작성한 글만 수정할 수 있습니다", redirectUrl + pno, resp);
 			return;
 		}
 		
+		req.setAttribute("cri", cri);
 		req.setAttribute("post", service.findBy(pno));
 		req.getRequestDispatcher("/WEB-INF/jsp/post/modify.jsp").forward(req, resp);
 	}
@@ -42,9 +46,11 @@ public class PostUpdate extends HttpServlet{
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Object memberObj = req.getSession().getAttribute("member");
+		Criteria cri = new Criteria(req);
+		String redirectUrl = "list?" + cri.getQs2();
 		
 		if(memberObj == null) {
-			Commons.printMsg("비정상적인 접근입니다", "list", resp);
+			Commons.printMsg("비정상적인 접근입니다", redirectUrl, resp);
 			return;
 		}
 		
@@ -55,7 +61,7 @@ public class PostUpdate extends HttpServlet{
 		String content = req.getParameter("content");
 		
 		if(!m.getId().equals(service.findBy(pno).getWriter())) {
-			Commons.printMsg("본인이 작성한 글만 수정할 수 있습니다", "view?pno=" + pno, resp);
+			Commons.printMsg("본인이 작성한 글만 수정할 수 있습니다", "view?pno=" + pno + "&" + cri.getQs2(), resp);
 			return;
 		}
 		service.modify(Post.builder()
@@ -63,7 +69,7 @@ public class PostUpdate extends HttpServlet{
 				.title(title)
 				.content(content)
 				.build());
-		resp.sendRedirect("view?pno=" + pno);
+		resp.sendRedirect("view?pno=" + pno + "&" + cri.getQs2());
 	}
 	
 }
