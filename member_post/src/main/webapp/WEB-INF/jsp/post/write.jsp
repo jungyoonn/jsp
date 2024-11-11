@@ -14,7 +14,7 @@
             	<h2 class="float-start">새로운 글 작성</h2>
            	</div>
                 <div class="col md-9 mx-auto">
-                	<form method="post">
+                	<form method="post" action="write?page=1&${cri.qs}">
 	                    <label for="title" class="form-label mt-3"><i class="fa-solid fa-pen"></i> <b>제목:</b></label>
 	                    <input type="text" class="form-control" id="title" placeholder="글 제목을 입력해 주세요" name="title">
 	
