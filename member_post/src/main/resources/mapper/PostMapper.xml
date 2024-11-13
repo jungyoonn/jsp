@@ -12,17 +12,19 @@
   	<result column="updatedate" property="updatedate"/>
   	<result column="view_count" property="viewCount"/>
   	<result column="cno" property="cno"/>
+  	<result column="attach_flag" property="attachFlag"/>
   </resultMap>
   
   <select id="selectList" resultMap="post">
-    select * from tbl_post 
+    select tp.*, (select count(*) from tbl_attach ta where ta.pno = tp.pno) attach_flag 
+    from tbl_post tp
     where cno = #{category}
     order by 1 desc
     limit #{amount} offset #{offset} 
   </select>
   
   <select id="selectOne" resultMap="post">
-    select * from tbl_post where pno = #{pno}
+    select tp.*, 1 from tbl_post tp where pno = #{pno}
   </select>
   
   <insert id="insert">
