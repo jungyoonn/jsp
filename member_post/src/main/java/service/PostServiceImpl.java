@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.session.SqlSession;
 
 import dto.Criteria;
+import mapper.AttachMapper;
 import mapper.PostMapper;
 import utils.MybatisInit;
 import vo.Post;
@@ -15,7 +16,14 @@ public class PostServiceImpl implements PostService {
 	public int write(Post post) {
 		try(SqlSession session = MybatisInit.getInstance().sqSessionFactory().openSession(true)) {
 			PostMapper mapper = session.getMapper(PostMapper.class);
-			return mapper.insert(post);
+			AttachMapper attachMapper = session.getMapper(AttachMapper.class);
+			mapper.insert(post);
+			
+			post.getAttachs().forEach(a -> {
+				a.setPno(post.getPno());
+				attachMapper.insert(a);
+			});
+			return 0;
 		}
 	}
 
