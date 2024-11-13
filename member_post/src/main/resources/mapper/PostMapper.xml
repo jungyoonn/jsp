@@ -13,27 +13,37 @@
   	<result column="view_count" property="viewCount"/>
   	<result column="cno" property="cno"/>
   </resultMap>
+  
   <select id="selectList" resultMap="post">
     select * from tbl_post 
     where cno = #{category}
     order by 1 desc
     limit #{amount} offset #{offset} 
   </select>
+  
   <select id="selectOne" resultMap="post">
     select * from tbl_post where pno = #{pno}
   </select>
+  
   <insert id="insert">
   	insert into tbl_post (title, content, writer, cno) values (#{title}, #{content}, #{writer}, #{cno})
+  	<selectKey order="AFTER" keyProperty="pno" resultType="long">
+  	  select max(pno) from tbl_post
+  	</selectKey>
   </insert>
+  
   <select id="getCount" resultType="int">
   	select count(*) as cnt from tbl_post where cno = #{category}
   </select>
+  
   <update id="update">
   	update tbl_post set title= #{title}, content = #{content}, updatedate = now() where pno = #{pno}
   </update>
+  
   <update id="increaseViewCount">
   	update tbl_post set view_count = view_count + 1 where pno = #{pno}
   </update>
+  
   <delete id="delete">
   	delete from tbl_post where pno = #{pno}
   </delete>
