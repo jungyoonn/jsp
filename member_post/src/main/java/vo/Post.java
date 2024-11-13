@@ -18,10 +18,11 @@ public class Post {
 	private final Date regdate;
 	private final Date updatedate;
 	private final int cno;
+	private final boolean attachFlag;
 	private List<Attach> attachs = new ArrayList<Attach>();
 	
 	public Post(Long pno, String title, String writer, String content, Long viewCount, Date regdate, Date updatedate,
-			int cno) {
+			int cno, boolean attachFlag) {
 		super();
 		this.pno = pno;
 		this.title = title;
@@ -31,6 +32,7 @@ public class Post {
 		this.regdate = regdate;
 		this.updatedate = updatedate;
 		this.cno = cno;
+		this.attachFlag = attachFlag;
 	}
 	
 }
