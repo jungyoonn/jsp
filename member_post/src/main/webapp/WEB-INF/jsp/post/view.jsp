@@ -27,7 +27,15 @@
                     <input type="text" class="form-control" id="regdate" name="regdate" value="${post.regdate}" disabled>
 
                     <label for="updatedate" class="form-label mt-3"><i class="fa-regular fa-calendar-plus"></i> <b>수정일:</b></label>
-                    <input type="text" class="form-control float-end" id="updatedate" name="updatedate" value="${post.updatedate}" disabled>
+                    <input type="text" class="form-control float-end" id="updatedate" name="updatedate" value="${post.updatedate}" disabled><br>
+
+					<label class="form-label mt-3"><i class="fa-solid fa-paperclip"></i> <b>첨부파일:</b><br></label>
+                    <ul class="list-group attach-result mt-2">
+	                    <c:if test="${empty post.attachs}">첨부파일이 없습니다.</c:if>
+	                    <c:forEach items="${post.attachs}" var="a">
+							<li class="list-group-item"><a href="${cp}download?uuid=${a.uuid}&origin=${a.origin}&path=${a.path}">${a.origin}</a></li>
+	                    </c:forEach>
+					</ul>
 
                     <div class="text-center my-5">
 	                    <c:if test="${post.writer == member.id}">
