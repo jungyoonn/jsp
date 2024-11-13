@@ -39,6 +39,8 @@ public class PostServiceImpl implements PostService {
 	public int remove(Long pno) {
 		try(SqlSession session = MybatisInit.getInstance().sqSessionFactory().openSession(true)) {
 			PostMapper mapper = session.getMapper(PostMapper.class);
+			AttachMapper attachMapper = session.getMapper(AttachMapper.class);
+			attachMapper.delete(pno);
 			return mapper.delete(pno);
 		}
 	}
@@ -63,9 +65,12 @@ public class PostServiceImpl implements PostService {
 	public Post view(Long pno) {
 		try(SqlSession session = MybatisInit.getInstance().sqSessionFactory().openSession(true)) {
 			PostMapper mapper = session.getMapper(PostMapper.class);
+			AttachMapper attachMapper = session.getMapper(AttachMapper.class);
+			Post post = mapper.selectOne(pno);
+			post.setAttachs(attachMapper.selectList(pno));
 			mapper.increaseViewCount(pno);
+			return post;
 		}
-		return findBy(pno);
 	}
 
 	@Override
