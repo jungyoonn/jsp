@@ -3,13 +3,23 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="mapper.PostMapper">
-  <select id="selectList" resultType="vo.Post">
+  <resultMap type="vo.Post" id="post">
+  	<id column="pno" property="pno"/>
+  	<result column="title" property="title"/>
+  	<result column="content" property="content"/>
+  	<result column="writer" property="writer"/>
+  	<result column="regdate" property="regdate"/>
+  	<result column="updatedate" property="updatedate"/>
+  	<result column="view_count" property="viewCount"/>
+  	<result column="cno" property="cno"/>
+  </resultMap>
+  <select id="selectList" resultMap="post">
     select * from tbl_post 
     where cno = #{category}
     order by 1 desc
     limit #{amount} offset #{offset} 
   </select>
-  <select id="selectOne" resultType="vo.Post">
+  <select id="selectOne" resultMap="post">
     select * from tbl_post where pno = #{pno}
   </select>
   <insert id="insert">
