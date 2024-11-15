@@ -5,6 +5,7 @@
 <html>
 	<head>
 		<jsp:include page="../common/head.jsp" />
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment-with-locales.min.js" integrity="sha512-4F1cxYdMiAW98oomSLaygEwmCnIP38pb4Kx70yQYqRwLVCs3DbRumfBq82T08g/4LJ/smbFGFpmeFlQgoDccgg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     </head>
     <body>
         <div class="wrap">
@@ -36,6 +37,12 @@
 							<li class="list-group-item"><a href="${cp}download?uuid=${a.uuid}&origin=${a.origin}&path=${a.path}">${a.origin}</a></li>
 	                    </c:forEach>
 					</ul>
+                    
+                    <div class="clearfix mt-3 mb-2">
+                    	<label class="form-label float-start"><i class="fa-regular fa-comment-dots text-dark"></i> <b>댓글</b><br></label>
+						<button type="button" class="btn btn-outline-dark btn-sm float-end" id="btnWriteReply">댓글작성</button>
+					</div>
+                   	<ul class="list-group small replies"></ul>
 
                     <div class="text-center my-5">
 	                    <c:if test="${post.writer == member.id}">
@@ -46,7 +53,84 @@
                     </div>
                 </div>
             </main>
+            <script src="${cp}js/reply.js"></script>
+            <script>
+            	moment.locale('ko');
+                const pno = '${post.pno}';
+                
+                replyService.list(pno, function(data) {
+                    let str = "";
+                    for(let i in data) {
+                        str += makeLi(data[i]);
+                    }     
+                    $(".replies").append(str);               
+                });
+
+                function makeLi(reply) {
+                    return `<li class="list-group-item">
+                        <a href="#" class="text-decoration-none">
+                            <p class="text-black fw-bold mt-3 text-truncate">\${reply.content}</p>
+                            <div class="clearfix text-secondary">
+                                <span class="float-start text-muted">\${reply.writer}</span>
+                                <span class="float-end small text-muted mx-2">\${moment(reply.regdate, 'yyyy/MM/DD HH:mm:ss').fromNow()}</span>
+                                <a class="del float-end small text-danger">삭제</button>
+                            </div>
+                        </a>
+                    </li>`;
+                }
+                
+                $("#btnWriteReply").click(function() {
+                	$("#replyModal").modal("show");
+                });
+                
+                $(function() {
+                	$("#btnReplyWriteSubmit").click(function() {
+                		const writer = $("#replyWriter").val();
+                		const content = $("#replyContent").val();
+                		const reply = {pno, writer, content};
+                		
+                		replyService.write(reply, function(data) {
+                			$("#replyModal").modal("hide");
+                			$("#replyWriter").val("");
+                			$("#replyContent").val("");
+                			
+                			location.reload();
+                		});
+                	});
+                	/* $("#replyModal").modal("show"); */
+                });
+            </script>
             <jsp:include page="../common/footer.jsp" />
         </div>
+        
+        <!-- The Modal -->
+		<div class="modal fade" id="replyModal">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		
+		      <!-- Modal Header -->
+		      <div class="modal-header">
+		        <h4 class="modal-title">댓글 작성</h4>
+		        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+		      </div>
+		
+		      <!-- Modal body -->
+		      <div class="modal-body">
+			      <label for="replyContent" class="mb-2">내용</label>
+		          <input type="text" class="form-control mb-3" id="replyContent"> 
+		          
+		          <label for="replyWriter" class="mb-2">작성자</label>
+		          <input type="text" class="form-control mb-3" id="replyWriter" readonly value="${member.id}"> 
+		      </div>
+		
+		      <!-- Modal footer -->
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-outline-dark" id="btnReplyWriteSubmit" data-bs-dismiss="modal">작성</button>
+		        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">취소</button>
+		      </div>
+		
+		    </div>
+		  </div>
+		</div>
     </body>
 </html>
