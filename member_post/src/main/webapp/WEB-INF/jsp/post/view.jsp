@@ -58,32 +58,68 @@
             	moment.locale('ko');
                 const pno = '${post.pno}';
                 
-                replyService.list(pno, function(data) {
-                    let str = "";
-                    for(let i in data) {
-                        str += makeLi(data[i]);
-                    }     
-                    $(".replies").append(str);               
-                });
+                function list() {
+	                replyService.list(pno, function(data) {
+	                    let str = "";
+	                    for(let i in data) {
+	                        str += makeLi(data[i]);
+	                    }     
+	                    $(".replies").html(str);               
+	                });
+                }
+                list();
 
                 function makeLi(reply) {
-                    return `<li class="list-group-item">
-                        <a href="#" class="text-decoration-none">
+                    return `<li class="list-group-item" data-rno="\${reply.rno}">
+                        <a class="text-decoration-none">
                             <p class="text-black fw-bold mt-3 text-truncate">\${reply.content}</p>
                             <div class="clearfix text-secondary">
                                 <span class="float-start text-muted">\${reply.writer}</span>
                                 <span class="float-end small text-muted mx-2">\${moment(reply.regdate, 'yyyy/MM/DD HH:mm:ss').fromNow()}</span>
-                                <a class="del float-end small text-danger">삭제</button>
+                                <a class="btn-reply-remove float-end small text-danger" href="#">삭제</button>
                             </div>
                         </a>
                     </li>`;
                 }
                 
+                //댓글 클릭 시
+                $(".replies").on("click", "li", function() {
+                	const rno = $(this).data("rno");
+                	replyService.view(rno, function(data) {
+                		$("#replyModal").find(".modal-footer div button").hide()
+                			.filter(":gt(0)").show();
+                		
+	                	$("#replyModal").data("rno", rno).modal("show");
+	                	$("#replyContent").val(data.content);
+	                	$("#replyWriter").val(data.writer);
+                		console.log(data);
+                	})
+                });
+                
+                $(".replies").on("click", "li .btn-reply-remove", function() {
+                	event.preventDefault();                	
+                	if(!confirm("삭제하시겠습니까?")) {
+                		return false;
+                	}
+                	const rno = $(this).closest("li").data("rno");
+                	replyService.remove(rno, function(data) {
+                		alert("삭제되었습니다.")
+                		list();
+                	});
+                	return false;
+                });
+                
+                // 댓글 쓰기 버튼 클릭 시
                 $("#btnWriteReply").click(function() {
+                	$("#replyModal").find(".modal-footer div button").hide()
+        				.filter(":eq(0)").show();
                 	$("#replyModal").modal("show");
+                	$("#replyContent").val("");
+                	$("#replyWriter").val("${member.id}");
                 });
                 
                 $(function() {
+                	// 댓글 작성
                 	$("#btnReplyWriteSubmit").click(function() {
                 		const writer = $("#replyWriter").val();
                 		const content = $("#replyContent").val();
@@ -91,13 +127,42 @@
                 		
                 		replyService.write(reply, function(data) {
                 			$("#replyModal").modal("hide");
-                			$("#replyWriter").val("");
-                			$("#replyContent").val("");
-                			
-                			location.reload();
+                			list();
                 		});
                 	});
-                	/* $("#replyModal").modal("show"); */
+                	
+                	// 댓글 수정
+                	$("#btnReplyModifySubmit").click(function() {
+                		if($("#replyWriter").val() != "${member.id}") {
+                			alert("본인의 댓글만 수정 가능합니다.");
+                			return;
+                		}
+                		
+                		const rno = $("#replyModal").data("rno");
+                		const content = $("#replyContent").val();
+                		const reply = {rno, content};
+                		
+                		replyService.modify(reply, function(data) {
+                			$("#replyModal").modal("hide");
+                			list();
+                		});
+                	});
+                	
+                	// 댓글 삭제
+                	$("#btnReplyRemoveSubmit").click(function() {
+                		if($("#replyWriter").val() != "${member.id}") {
+                			alert("본인의 댓글만 삭제 가능합니다.");
+                			return;
+                		}
+                		
+                		const rno = $("#replyModal").data("rno");
+                		const reply = {rno};
+                		
+                		replyService.remove(rno, function(data) {
+                			$("#replyModal").modal("hide");
+                			list();
+                		});
+                	});
                 });
             </script>
             <jsp:include page="../common/footer.jsp" />
@@ -125,10 +190,13 @@
 		
 		      <!-- Modal footer -->
 		      <div class="modal-footer">
-		        <button type="button" class="btn btn-outline-dark" id="btnReplyWriteSubmit" data-bs-dismiss="modal">작성</button>
-		        <button type="button" class="btn btn-dark" data-bs-dismiss="modal">취소</button>
+			      <div>
+			        <button type="button" class="btn btn-secondary" id="btnReplyWriteSubmit" data-bs-dismiss="modal">작성</button>
+			        <button type="button" class="btn btn-outline-secondary" id="btnReplyModifySubmit" data-bs-dismiss="modal">수정</button>
+			        <button type="button" class="btn btn-outline-dark" id="btnReplyRemoveSubmit" data-bs-dismiss="modal">삭제</button>
+			      </div>
+		           <button type="button" class="btn btn-dark" data-bs-dismiss="modal">취소</button>
 		      </div>
-		
 		    </div>
 		  </div>
 		</div>
