@@ -10,8 +10,15 @@ const replyService = (function() {
 			if(callback) callback(data);
         })
     }
-    function list(pno, callback) {
-        $.getJSON(url + "/list/" + pno).done(function(data) {
+    function list(pno, cri, callback) {
+		let reformedURL = url + "/list/" + pno;
+		if(cri && cri.lastRno) {
+			reformedURL += "/" + cri.lastRno;
+			if(cri.cmount) {
+				reformedURL += "/" + crr.amount;
+			}
+		}
+        $.getJSON(reformedURL).done(function(data) {
             if(callback) callback(data);
         });
     }
