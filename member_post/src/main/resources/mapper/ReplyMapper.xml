@@ -5,11 +5,9 @@
 <mapper namespace="mapper.ReplyMapper">
   <select id="selectList" resultType="vo.Reply">
   	select * from tbl_reply where pno = #{pno}
-  	
-  	select * from tbl_reply where pno = #{pno}
-	and rno > 17
+	and rno > #{cri.lastRno}
 	order by rno 
-	limit 5
+	limit #{cri.amount}
   </select>
   
   <insert id="insert">

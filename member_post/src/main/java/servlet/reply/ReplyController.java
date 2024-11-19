@@ -1,6 +1,7 @@
 package servlet.reply;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import dto.ReplyCri;
 import service.ReplyService;
 import service.ReplyServiceImpl;
 import vo.Reply;
@@ -45,22 +47,25 @@ public class ReplyController extends HttpServlet{
 		
 		Object ret = null;
 		if(uri.startsWith("list")) { // 목록 조회
-			int tmpIdx = uri.lastIndexOf("/");
+			// /reply/list/#{pno}
+			// /reply/list/#{pno}/#{lastPno}
+			// /reply/list/#{pno}/#{lastPno}/#{amount}
+			ReplyCri cri = new ReplyCri();
+			int tmpIdx = uri.indexOf("/");
 			Long pno = 0L;
 			if(tmpIdx != -1) {
 				String tmp = uri.substring(tmpIdx+1);
 				String[] tmpArr = tmp.split("/");
 				switch(tmpArr.length) {
-				case 0:
-					break;
-				default:
-					break;
+				case 3:
+					cri.setAmount(Integer.parseInt(tmpArr[2]));
+				case 2:
+					cri.setLastRno(Long.parseLong(tmpArr[1]));
+				case 1:
+					pno = Long.valueOf(tmpArr[0]);
 				}
-				
-				pno = Long.valueOf(uri.substring(tmpIdx + 1));
-				
 			}
-			ret = service.list(pno);
+			ret = service.list(pno, cri);
 		} else { // 단일 조회
 			Long rno = Long.valueOf(uri);
 			ret = service.findBy(rno);
