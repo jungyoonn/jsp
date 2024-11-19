@@ -15,4 +15,5 @@ public interface ReplyMapper {
 	
 	Reply selectOne(Long rno);
 	List<Reply> selectList(@Param("pno") Long pno, @Param("cri")ReplyCri cri);
+	List<Reply> selectListByMe(Reply reply);
 }

@@ -65,7 +65,7 @@ public class ReplyController extends HttpServlet{
 					pno = Long.valueOf(tmpArr[0]);
 				}
 			}
-			ret = service.list(pno, cri);
+			ret = service.list(pno, cri, req.getSession().getAttribute("member"));
 		} else { // 단일 조회
 			Long rno = Long.valueOf(uri);
 			ret = service.findBy(rno);
