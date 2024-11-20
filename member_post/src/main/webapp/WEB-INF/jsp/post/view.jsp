@@ -43,16 +43,7 @@
 					</div>
                     
                     <ul class="list-group small my-2 my-replies">
-                   		<li class="list-group-item" data-rno="6">
-	                        <a class="text-decoration-none">
-	                            <p class="text-black fw-bold mt-3 text-truncate">모다피</p>
-	                            </a><div class="clearfix text-secondary"><a class="text-decoration-none">
-	                                <span class="float-start text-muted">jjj</span>
-	                                <span class="float-end small text-muted mx-2">5일 전</span>
-	                                </a><a class="btn-reply-remove float-end small text-danger" href="#">삭제
-	                            </a></div><a class="btn-reply-remove float-end small text-danger" href="#">
-	                        </a>
-	                    </li>
+                   		
                    	</ul>
                     
                     <div class="clearfix mt-5 mb-2">

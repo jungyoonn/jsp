@@ -67,4 +67,8 @@ public class Criteria {
 		
 		return String.join("&", strs);
 	}
+	
+	public String[] getTypeArr() {
+		return type.split("");
+	}
 }
